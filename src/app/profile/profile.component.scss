@@ -1,0 +1,8 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+}
+  
+.profile-container > * {
+    width: 100%;
+}

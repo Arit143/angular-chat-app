@@ -1,0 +1,78 @@
+<button class="btn btn-link" style="float: right" (click)="openDialog()">My Profile</button>
+
+<div [ngClass]="{'modal fade': !showModal, 'modal fade show': showModal}" [ngStyle]="{'display': showModal ? 'block' : 'none', 'z-index': showModal ? '1072' : '0' }" 
+id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Profile Details</h5>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow: auto;">
+                    <form [formGroup]="profileForm">
+                            <div class="form-group">
+                                <label for="firstName">First Name:</label>
+                                <input type="text"  formControlName="firstName" class="form-control" id="firstName" aria-describedby="first name" placeholder="Enter first name">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name:</label>
+                                <input type="text" formControlName="lastName" class="form-control" id="lastName" aria-describedby="last name" placeholder="Enter last name">
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country:</label>
+                                <select class="custom-select" (change)="onCountryDropdownSelect($event.target.value)">
+                                    <option selected>Select Country</option>
+                                    <option *ngFor= "let countryDetail of countryDetails">
+                                        {{ countryDetail.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="alpha2Code">Alpha 2 Code:</label>
+                                <input type="text" formControlName="alpha2Code" class="form-control" id="alpha2Code" aria-describedby="alpha code 2" placeholder="Alpha 2 Code">
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number:</label>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <select class="custom-select">
+                                                <option selected>Select calling code</option>
+                                                <option *ngFor= "let callingCode of profileForm.get('callingCodes').value">
+                                                    {{ callingCode }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" formControlName="phoneNumber" class="form-control" id="phoneNumber" aria-describedby="phone number" placeholder="Phone number">
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Currency">Currency:</label>
+                                <select class="custom-select">
+                                    <option selected>Select Currency</option>
+                                    <option *ngFor= "let currency of profileForm.get('currencies').value">
+                                        {{ currency.code }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Timezone">Timezone:</label>
+                                <select class="custom-select">
+                                    <option selected>Select Timezone</option>
+                                    <option *ngFor= "let timezone of profileForm.get('timezones').value">
+                                        {{ timezone }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="alphaCode2">Country Flag:</label>
+                                <img width="50" [src]="profileForm.get('flag').value" />
+                            </div>
+                    </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeDialog()" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+</div>
