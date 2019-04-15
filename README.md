@@ -1,5 +1,5 @@
 # angular-chat-app
-An angular chat app with web socket
+An angular chat app with Socket IO and Socket IO-client
 
 ## Authors
 Aritra Ghosh
@@ -57,4 +57,4 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 1. There are mainly two services which are injected. `chat.service.ts` and `profile.service.ts`
 2. Each feature folder contains `component`, `scss` and `html`.
 3. The app can also handle `routing`.
-4. All the components, provides, directives are bootstraped in `app.component`
+4. All the components, provider, directives are bootstraped in `app.component`
