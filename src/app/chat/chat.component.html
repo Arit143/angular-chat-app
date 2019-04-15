@@ -3,14 +3,14 @@
     <div class="form-group">
         <div class="row">
             <div class="col-sm-9">
-                <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="name" placeholder="Enter your name">
+                <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="name" placeholder="Enter your name to initiate chat">
             </div>
             <div class="col-sm-3">
                 <button type="button" class="btn btn-secondary" (click)="join()">Join</button>
             </div>
         </div>    
     </div>
-    <div class="fluid-container" style="padding: 30px; border: 1px solid #D7D8D6; margin-bottom: 30px;"> 
+    <div class="fluid-container" style="padding: 30px; border: 1px solid #D7D8D6; margin-bottom: 30px; min-height: 400px; overflow: auto"> 
         <div class="row">
             <div class="well" style="height: 200px;">
                 <div *ngFor="let item of messageArray">

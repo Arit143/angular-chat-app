@@ -1,51 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from './../chat.service';
-import { timer, Observable, Subscription } from 'rxjs';
+import { timer, Observable } from 'rxjs';
+import { USER_INACTIVITY_TIMEOUT } from './../app.constants';
 
 @Component({
     selector: 'active-inactive',
     templateUrl: './activeInactive.component.html'
 })
-
 export class ActiveInactiveComponent implements OnInit {
     private timer: Observable<number>;
-    private subscription: Subscription;
-    activeInactiveUsers: Array<{ room: string, user: string, isActive: boolean, timeJoined?: Date, timeMessaged?: Date}> = []; 
+    activeUsers: Array<{ user: string; room: string; timeJoined?: Date; timeMessaged?: Date }>  = []; 
     constructor(private chatService: ChatService) {
         this.chatService.newUserJoined()
             .subscribe(data => {
-                this.activeInactiveUsers.push({ room: data.room, user: data.user, isActive: true, timeJoined: new Date() })
+                this.activeUsers = data.allUsers;
             });
         this.chatService.newMessageReceived()
             .subscribe(data => {
-                this.activeInactiveUsers.push({ room: data.room, user: data.user, isActive: true, timeMessaged: new Date() })
+                this.activeUsers = data.allUsers;
             });
-        this.activeInactiveUsers.length > 0 && this.chatService.userInactive()
+        this.chatService.userInactive()
             .subscribe(data => {
-                this.activeInactiveUsers.push({ room: data.room, user: data.user, isActive: false })
+                this.activeUsers = data.allUsers;
             });
     }
 
     ngOnInit() {
         this.timer = timer(0, 10000);
-        this.subscription = this.timer.subscribe((t) => this.onTimeOut());
+        this.timer.subscribe((t) => this.onTimeOut());
     }
 
     onTimeOut() {
+        if (this.activeUsers.length === 0) {
+            return;
+        }
         /**
          * We should keep track of when the user joined and when the user messaged last
          */
-        const inactiveUsers = this.activeInactiveUsers.filter((value) => {
+        const inactiveUsers = this.activeUsers.filter((value) => {
             if (!value.timeMessaged) {
-                return new Date().getTime() - value.timeJoined.getTime() > 100000;
+                return (new Date().getTime() - new Date(value.timeJoined).getTime()) > USER_INACTIVITY_TIMEOUT;
             } else {
-                return value.timeJoined.getTime() - value.timeMessaged.getTime() > 10
+                return (new Date(value.timeJoined).getTime() - new Date(value.timeMessaged).getTime()) > USER_INACTIVITY_TIMEOUT;
             }
         });
 
         if (inactiveUsers.length > 0) {
             this.chatService.userInactiveEmit(inactiveUsers[0]);
-            this.activeInactiveUsers = this.activeInactiveUsers.filter(value => value.user !== inactiveUsers[0].user);
         }
     };
 }

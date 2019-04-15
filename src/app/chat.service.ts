@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { WS_URL } from './app.constants';
 
 class Data {
     user: string;
@@ -11,18 +12,19 @@ class UserDetails {
     room: string;
     user: string;
     message: string;
+    allUsers?: Data[];
 }
 
 @Injectable()
 export class ChatService {
-    socket = io('http://localhost:3000');
+    socket = io(WS_URL);
 
     joinRoom(data: Data) {
         this.socket.emit('join', data);
     }
 
     newUserJoined() {
-        const observable = new Observable<{ user: string, message: string, room: string }>(observer => {
+        const observable = new Observable<{ user: string, message: string, room: string, allUsers?: Data[] }>(observer => {
             this.socket.on('new user joined', (data: UserDetails) => {
                 observer.next(data);
             });
@@ -38,7 +40,7 @@ export class ChatService {
     }
 
     newMessageReceived() {
-        const observable = new Observable<{ user: string, message: string, room: string}>(observer => {
+        const observable = new Observable<{ user: string, message: string, room: string, allUsers?: Data[]}>(observer => {
             this.socket.on('new message received', (data: UserDetails) => {
                 observer.next(data);
             });
@@ -54,7 +56,7 @@ export class ChatService {
     }
 
     userInactive() {
-        const observable = new Observable<{ user: string, message: string, room: string}>(observer => {
+        const observable = new Observable<{ user: string, message: string, room: string, allUsers?: Data[]}>(observer => {
             this.socket.on('user inactive', (data: UserDetails) => {
                 observer.next(data);
             });

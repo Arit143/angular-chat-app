@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const app = require('express')();
+const merge = require('lodash/merge');
+const findIndex = require('lodash/findIndex');
 
 app.use((req, res, next) => {
     res.append('Access-Control-Allow-Origin' , 'http://localhost:8080');
@@ -13,28 +15,41 @@ app.use((req, res, next) => {
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+let allUsers = [];
+
 io.sockets.on('connection', (socket) => {
     console.log('socket connected');
 
     socket.on('join', (data) => {
         socket.join(data.room);
-
+        
+        allUsers.push({ user: data.user, room: data.room, timeJoined: new Date() });
         console.log(`${data.user} joined the room ${data.room}`);
+        console.log(`All users in the room`, allUsers);
 
-        io.in(data.room).emit('new user joined', { user: data.user, message: 'has joined the room', room: data.room });
+        io.in(data.room).emit('new user joined', { user: data.user, message: 'has joined the room', room: data.room, allUsers });
     });
 
     socket.on('new message', (data) => {
         console.log(`${data.user} in room ${data.room} has posted this message ${data.message}`);
-        io.in(data.room).emit('new message received', { user: data.user, message: data.message, room: data.room });
+
+        const userDetailIndex = findIndex(allUsers, { user: data.user, room: data.room });
+        const updatedUserDetails = merge({}, allUsers[userDetailIndex], { timeMessaged: new Date() });
+
+        allUsers[userDetailIndex] = updatedUserDetails;
+
+        io.in(data.room).emit('new message received', { user: data.user, message: data.message, room: data.room, allUsers });
     })
 
     socket.on('user inactivity', (data) => {
-        console.log(`${data.user} is inactive`);
-        io.in(data.room).emit('user inactive', { user: data.user, message: 'has been inactive', room: data.room });
+        console.log(`${data.user} is inactive in ${data.room}`);
+
+        allUsers = allUsers.filter(userDetails => userDetails.user !== data.user && userDetails.room === data.room);
+        io.in(data.room).emit('user inactive', { user: data.user, message: 'has been inactive', room: data.room, allUsers });
     })
 
     socket.on('disconnect', () => {
+        allUsers = [];
         console.log('socket disconnected');
     });
 });
