@@ -52,6 +52,7 @@
     "@angular/compiler-cli": "~7.0.0",
     "@ngtools/webpack": "~7.3",
     "@types/core-js": "~2.5",
+    "@types/lodash": "^4.14.123",
     "@types/node": "~10.12",
     "@types/socket.io-client": "^1.4.32",
     "angular-router-loader": "~0.8",

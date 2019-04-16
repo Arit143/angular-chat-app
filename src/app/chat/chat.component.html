@@ -11,27 +11,43 @@
         </div>    
     </div>
     <div *ngIf="chatJoined" style="margin-top: 20px;">
-        <div style="padding: 30px; border: 1px solid #D7D8D6; margin-bottom: 30px; min-height: 400px; overflow: auto"> 
-            <div class="row">
-                <div class="well" style="height: 200px;">
-                    <div *ngFor="let item of messageArray">
-                        <span>
-                            <strong>{{ item.user }}: </strong>
-                            {{ item.message }} 
-                        </span>
-                    </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" *ngFor="let chatRoom of allChatRooms">
+                    <a class="{{ chatRoom === currentRoom ? 'nav-link active' : 'nav-link'}}" 
+                        id="{{chatRoom}}-tab" 
+                        data-toggle="tab" 
+                        href="#{{chatRoom}}" 
+                        role="tab" 
+                        (click)="onTabClick(chatRoom)">
+                            {{chatRoom}}
+                    </a>
+                </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+                <div *ngFor="let chatRoom of allChatRooms" class="{{ chatRoom === currentRoom ? 'tab-pane fade show active' : 'tab-pane fade'}}" id="chatRoom" role="tabpanel">
+                        <div style="padding: 30px; border: 1px solid #D7D8D6; margin-bottom: 30px; min-height: 400px; overflow: auto; border-top: 0"> 
+                                <div class="row">
+                                    <div class="well" style="height: 200px;">
+                                        <div *ngFor="let item of messageArray">
+                                            <span>
+                                                <strong>{{ item.user }}: </strong>
+                                                {{ item.message }} 
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <input type="text" formControlName="message" class="form-control" id="message" aria-describedby="message" placeholder="Enter message here">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button type="button" class="btn btn-secondary" (click)="send()" style="float: right">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
-            </div>
         </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-sm-9">
-                    <input type="text" formControlName="message" class="form-control" id="message" aria-describedby="message" placeholder="Enter message here">
-                </div>
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-secondary" (click)="send()">Send</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </form>

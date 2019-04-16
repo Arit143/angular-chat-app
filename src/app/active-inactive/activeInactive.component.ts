@@ -59,17 +59,25 @@ export class ActiveInactiveComponent implements OnInit {
 
     joinRoom(user: string) {
         if (user !== this.chatService.getUser()) {
-            if (this.allChatRooms.length > 0) {
-                const presentUserWithOtherUser = `${user}-${this.chatService.getUser()}`;
-                const otherUserWithPresentUser = `${this.chatService.getUser()}-${user}`;
+            let arrayIndex = undefined;
+            let room = '';
+            const presentUserWithOtherUser = `${this.chatService.getUser()}${user}`;
+            const otherUserWithPresentUser = `${user}${this.chatService.getUser()}`;
 
-                console.log(presentUserWithOtherUser, otherUserWithPresentUser);
-                console.log(this.allChatRooms);
-            } else {
-                this.chatService.setRoom(`${user}-${this.chatService.getUser()}`);
-                this.chatService.joinSingleRoom({ room: `${user}-${this.chatService.getUser()}` });
+            if (this.allChatRooms.includes(presentUserWithOtherUser) || this.allChatRooms.includes(otherUserWithPresentUser)) {
+                const userIndex1 = this.allChatRooms.findIndex(elem => elem === presentUserWithOtherUser);
+                const userIndex2 = this.allChatRooms.findIndex(elem => elem === otherUserWithPresentUser);
+                arrayIndex = userIndex1 > -1 ? userIndex1 : userIndex2;
             }
-            
+
+            if (arrayIndex !== undefined) {
+                room = this.allChatRooms[arrayIndex]
+            } else {
+                room = presentUserWithOtherUser;
+            }
+
+            this.chatService.setRoom(room);
+            this.chatService.joinSingleRoom({ room });
         }
     }
 }

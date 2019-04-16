@@ -3,6 +3,7 @@
 const app = require('express')();
 const merge = require('lodash/merge');
 const findIndex = require('lodash/findIndex');
+const includes = require('lodash/includes');
 
 app.use((req, res, next) => {
     res.append('Access-Control-Allow-Origin' , 'http://localhost:8080');
@@ -25,7 +26,8 @@ io.sockets.on('connection', (socket) => {
         socket.join(data.room);
         
         allUsers.push({ user: data.user, room: data.room, timeJoined: new Date() });
-        allChatRooms.push(data.room);
+        !includes(allChatRooms, data.room) && allChatRooms.push(data.room);
+
         console.log(`${data.user} joined the room ${data.room}`);
         console.log(`All users in the room`, allUsers);
 
@@ -53,19 +55,26 @@ io.sockets.on('connection', (socket) => {
         console.log(`${data.user} is inactive in ${data.room}`);
 
         allUsers = allUsers.filter(userDetails => userDetails.user !== data.user && userDetails.room === data.room);
-        io.in(data.room).emit('user inactive', { user: data.user, message: 'has been inactive', room: data.room, allUsers });
+        
+        allChatRooms.forEach(room => {
+            io.in(room).emit('user inactive', { user: data.user, message: 'has been inactive', room: room, allUsers });
+        });      
     });
 
     socket.on('join single chat', (data) => {
+        console.log('single chat', data.room);
         socket.join(data.room);
 
-        allChatRooms.push(data.room);
-        console.log(data.room);
-        io.in(data.room).emit('single chat initiated', { room: data.room, allChatRooms });
+        !includes(allChatRooms, data.room) && allChatRooms.push(data.room);
+
+        allChatRooms.forEach(room => {
+            io.in(room).emit('single chat initiated', { room: room, allChatRooms });
+        })
     });
 
     socket.on('disconnect', () => {
         allUsers = [];
+        allChatRooms = [];
         console.log('socket disconnected');
     });
 });
