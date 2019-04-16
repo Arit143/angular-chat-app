@@ -38,7 +38,7 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 6. User can do a chat session with single people. The chats are aligned as tabs with the names of the respective chat partners.
 
 Find some screenshots as below
-![Alt Text](https://i.imgur.com/0fadYzj.gif)
+![Alt Text](<iframe src='https://gfycat.com/ifr/WelltodoSandyHare' frameborder='0' scrolling='no' allowfullscreen width='640' height='444'></iframe>)
 
 ## Folder structure
 
