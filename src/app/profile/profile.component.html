@@ -1,4 +1,6 @@
-<button class="btn btn-link" style="float: right" (click)="openDialog()">My Profile</button>
+<div style="float: right;">
+    <button class="btn btn-link" (click)="openDialog()">My Profile</button>
+</div>
 
 <div [ngClass]="{'modal fade': !showModal, 'modal fade show': showModal}" [ngStyle]="{'display': showModal ? 'block' : 'none', 'z-index': showModal ? '1072' : '0' }" 
 id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

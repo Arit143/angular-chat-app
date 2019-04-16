@@ -16,6 +16,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 let allUsers = [];
+let allChatRooms = [];
 
 io.sockets.on('connection', (socket) => {
     console.log('socket connected');
@@ -24,10 +25,17 @@ io.sockets.on('connection', (socket) => {
         socket.join(data.room);
         
         allUsers.push({ user: data.user, room: data.room, timeJoined: new Date() });
+        allChatRooms.push(data.room);
         console.log(`${data.user} joined the room ${data.room}`);
         console.log(`All users in the room`, allUsers);
 
-        io.in(data.room).emit('new user joined', { user: data.user, message: 'has joined the room', room: data.room, allUsers });
+        io.in(data.room).emit('new user joined', { 
+            user: data.user, 
+            message: 'has joined the room', 
+            room: data.room, 
+            allUsers,
+            allChatRooms
+         });
     });
 
     socket.on('new message', (data) => {
@@ -39,14 +47,22 @@ io.sockets.on('connection', (socket) => {
         allUsers[userDetailIndex] = updatedUserDetails;
 
         io.in(data.room).emit('new message received', { user: data.user, message: data.message, room: data.room, allUsers });
-    })
+    });
 
     socket.on('user inactivity', (data) => {
         console.log(`${data.user} is inactive in ${data.room}`);
 
         allUsers = allUsers.filter(userDetails => userDetails.user !== data.user && userDetails.room === data.room);
         io.in(data.room).emit('user inactive', { user: data.user, message: 'has been inactive', room: data.room, allUsers });
-    })
+    });
+
+    socket.on('join single chat', (data) => {
+        socket.join(data.room);
+
+        allChatRooms.push(data.room);
+        console.log(data.room);
+        io.in(data.room).emit('single chat initiated', { room: data.room, allChatRooms });
+    });
 
     socket.on('disconnect', () => {
         allUsers = [];

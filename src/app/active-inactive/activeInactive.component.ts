@@ -9,11 +9,14 @@ import { USER_INACTIVITY_TIMEOUT } from './../app.constants';
 })
 export class ActiveInactiveComponent implements OnInit {
     private timer: Observable<number>;
+    allChatRooms: Array<string> = [];
     activeUsers: Array<{ user: string; room: string; timeJoined?: Date; timeMessaged?: Date }>  = []; 
+
     constructor(private chatService: ChatService) {
         this.chatService.newUserJoined()
             .subscribe(data => {
                 this.activeUsers = data.allUsers;
+                this.allChatRooms = data.allChatRooms;
             });
         this.chatService.newMessageReceived()
             .subscribe(data => {
@@ -23,6 +26,10 @@ export class ActiveInactiveComponent implements OnInit {
             .subscribe(data => {
                 this.activeUsers = data.allUsers;
             });
+        this.chatService.newSingleChat()
+            .subscribe(data => {
+                this.allChatRooms = data.allChatRooms
+            })
     }
 
     ngOnInit() {
@@ -49,4 +56,20 @@ export class ActiveInactiveComponent implements OnInit {
             this.chatService.userInactiveEmit(inactiveUsers[0]);
         }
     };
+
+    joinRoom(user: string) {
+        if (user !== this.chatService.getUser()) {
+            if (this.allChatRooms.length > 0) {
+                const presentUserWithOtherUser = `${user}-${this.chatService.getUser()}`;
+                const otherUserWithPresentUser = `${this.chatService.getUser()}-${user}`;
+
+                console.log(presentUserWithOtherUser, otherUserWithPresentUser);
+                console.log(this.allChatRooms);
+            } else {
+                this.chatService.setRoom(`${user}-${this.chatService.getUser()}`);
+                this.chatService.joinSingleRoom({ room: `${user}-${this.chatService.getUser()}` });
+            }
+            
+        }
+    }
 }

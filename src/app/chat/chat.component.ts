@@ -9,6 +9,8 @@ import { ChatService } from './../chat.service';
 
 export class ChatComponent {
     messageArray: Array<{ user: string, message: string}> = []; 
+    chatJoined: boolean = false;
+    user: string;
     constructor(private chatService: ChatService) {
         this.chatService.newUserJoined()
             .subscribe(data => {
@@ -31,6 +33,8 @@ export class ChatComponent {
 
     join() {
         this.chatService.joinRoom({ user: this.chatDetails.value.name, room: 'group-chat' });
+        this.chatJoined = true;
+        this.user = this.chatDetails.value.name;
     }
 
     send() {
