@@ -37,8 +37,10 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 5. Once the user joins the chat room, a message is being posted. When the user becomes inactive according to above mentioned logic, a message that the user is inactive is posted.
 6. User can do a chat session with single people. The chats are aligned as tabs with the names of the respective chat partners.
 
-Find some screenshots as below
-![Alt Text](<iframe src='https://gfycat.com/ifr/WelltodoSandyHare' frameborder='0' scrolling='no' allowfullscreen width='640' height='444'></iframe>)
+The screen flow are hosted below:
+
+https://gfycat.com/ifr/WelltodoSandyHare
+
 
 ## Folder structure
 
