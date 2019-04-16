@@ -33,6 +33,7 @@ export class ChatComponent {
             .subscribe(data => {
                 this.allMessages.push(data);
                 this.messageArray = this.allMessages.filter(message => message.room === this.chatService.getRoom());
+                this.allChatRooms = data.allChatRooms.filter(room => room.includes(this.user) || room === 'group-chat');
                 this.currentRoom = this.chatService.getRoom();
             });
         this.chatService.newSingleChat()

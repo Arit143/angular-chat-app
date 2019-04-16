@@ -57,7 +57,7 @@ io.sockets.on('connection', (socket) => {
         allUsers = allUsers.filter(userDetails => userDetails.user !== data.user && userDetails.room === data.room);
         
         allChatRooms.forEach(room => {
-            io.in(room).emit('user inactive', { user: data.user, message: 'has been inactive', room: room, allUsers });
+            io.in(room).emit('user inactive', { user: data.user, message: 'has been inactive', room: room, allUsers, allChatRooms });
         });      
     });
 

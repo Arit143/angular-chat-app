@@ -8,7 +8,13 @@ import { USER_INACTIVITY_TIMEOUT } from './../app.constants';
     templateUrl: './activeInactive.component.html'
 })
 export class ActiveInactiveComponent implements OnInit {
+    /**
+     * Timer private variable to hold timer observable
+     */
     private timer: Observable<number>;
+    /**
+     * Get all chat rooms
+     */
     allChatRooms: Array<string> = [];
     activeUsers: Array<{ user: string; room: string; timeJoined?: Date; timeMessaged?: Date }>  = []; 
 
@@ -25,6 +31,7 @@ export class ActiveInactiveComponent implements OnInit {
         this.chatService.userInactive()
             .subscribe(data => {
                 this.activeUsers = data.allUsers;
+                this.allChatRooms = data.allChatRooms;
             });
         this.chatService.newSingleChat()
             .subscribe(data => {
@@ -58,6 +65,10 @@ export class ActiveInactiveComponent implements OnInit {
     };
 
     joinRoom(user: string) {
+        if (this.allChatRooms.length === 0) {
+            return;
+        }
+        
         if (user !== this.chatService.getUser()) {
             let arrayIndex = undefined;
             let room = '';

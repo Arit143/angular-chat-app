@@ -93,7 +93,7 @@ export class ChatService {
     }
 
     userInactive() {
-        const observable = new Observable<{ user: string, message: string, room: string, allUsers?: Data[]}>(observer => {
+        const observable = new Observable<{ user: string, message: string, room: string, allUsers?: Data[], allChatRooms: Array<string>}>(observer => {
             this.socket.on('user inactive', (data: UserDetails) => {
                 observer.next(data);
             });

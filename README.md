@@ -28,22 +28,17 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 7. Express JS for server side
 8. Webpack
 
-## WIP
-
-### What has been done?
+##Features
 
 1. User can see his/her profile. User can have the prefilled values once he/she clicks on the country dropdown. The `My Profile` link is on the top right.
 2. User can do a chat session with multiple people. You can open `http://localhost:8080` in various new session browsers and try posting message in the chat.
-3. User gets inactive after approx 1000 seconds. It checks when the user logged in and when the user last posted the message. Note: User has to join the chat before posting any message else socket connected can not be made. (just a mechanism to continue the session)
+3. For the purpose of simplicity, the app polls after every `10000 ms` to check whether the time the user logged in and the time the user last messaged is greater than 5 mins. If it is greater, the user gets inactive and it is removed from the active users list.
 4. Active users are shown on the left side with green dot under `All Users`. Inactive users are removed from the active user list.
 5. Once the user joins the chat room, a message is being posted. When the user becomes inactive according to above mentioned logic, a message that the user is inactive is posted.
+6. User can do a chat session with single people. The chats are aligned as tabs with the names of the respective chat partners.
 
-### What has not been done?
-
-1. User cannot do a single message chat. `Whereever the functionality to support the single message chat is present`.
-2. CSS is not proper.
-3. Chats can be presented in a better way.
-4. When user creates a new session window, after he joins, he should be able to see the active users. Now only the person ables to see all the active users who has joined the chat before the other person joins(new user who has joined the chat room cannot see previously active users). All the users should be able to see all active and inactive users after he joins the chat room.
+Find some screenshots as below
+![Alt Text](https://i.imgur.com/gGDjT0d.gif)
 
 ## Folder structure
 

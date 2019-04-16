@@ -19,7 +19,7 @@
                         href="#{{chatRoom}}" 
                         role="tab" 
                         (click)="onTabClick(chatRoom)">
-                            {{chatRoom}}
+                            {{chatRoom.replace(user, "")}}
                     </a>
                 </li>
         </ul>
