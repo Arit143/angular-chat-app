@@ -28,7 +28,7 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 7. Express JS for server side
 8. Webpack
 
-##Features
+## Features
 
 1. User can see his/her profile. User can have the prefilled values once he/she clicks on the country dropdown. The `My Profile` link is on the top right.
 2. User can do a chat session with multiple people/ single chat. You can open `http://localhost:8080` in various new session browsers and try posting message in the chat.
@@ -40,7 +40,9 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 The screen flow are hosted below:
 
 Profile - https://gfycat.com/ifr/WelltodoSandyHare
+
 Chat App - https://gfycat.com/barrencheerygoldfinch-app
+
 User Active - Inactive - https://gfycat.com/homelypleasediberiannase
 
 ## Folder structure
