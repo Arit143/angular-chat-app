@@ -31,7 +31,7 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 ##Features
 
 1. User can see his/her profile. User can have the prefilled values once he/she clicks on the country dropdown. The `My Profile` link is on the top right.
-2. User can do a chat session with multiple people. You can open `http://localhost:8080` in various new session browsers and try posting message in the chat.
+2. User can do a chat session with multiple people/ single chat. You can open `http://localhost:8080` in various new session browsers and try posting message in the chat.
 3. For the purpose of simplicity, the app polls after every `10000 ms` to check whether the time the user logged in and the time the user last messaged is greater than 5 mins. If it is greater, the user gets inactive and it is removed from the active users list.
 4. Active users are shown on the left side with green dot under `All Users`. Inactive users are removed from the active user list.
 5. Once the user joins the chat room, a message is being posted. When the user becomes inactive according to above mentioned logic, a message that the user is inactive is posted.
@@ -39,8 +39,9 @@ Fire up with `npm start` to start the server in one terminal and `npm run build:
 
 The screen flow are hosted below:
 
-https://gfycat.com/ifr/WelltodoSandyHare
-
+Profile - https://gfycat.com/ifr/WelltodoSandyHare
+Chat App - https://gfycat.com/barrencheerygoldfinch-app
+User Active - Inactive - https://gfycat.com/homelypleasediberiannase
 
 ## Folder structure
 

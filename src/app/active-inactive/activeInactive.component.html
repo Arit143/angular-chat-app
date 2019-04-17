@@ -1,5 +1,5 @@
 <h3 style="color: white; padding: 10px;">Active Users</h3>
-<div *ngFor="let userDetails of activeUsers" style="padding: 10px" (click)="joinRoom(userDetails.user)">
+<div *ngFor="let userDetails of activeUsers" style="padding: 10px; cursor: pointer;" (click)="joinRoom(userDetails.user)">
     <i class="fas fa-circle" style="color: green; font-size: 14px"></i>
     <span style="color: white; margin-left: 10px;">{{ userDetails.user }}</span>
 </div>

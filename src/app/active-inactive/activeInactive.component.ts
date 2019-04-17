@@ -16,34 +16,59 @@ export class ActiveInactiveComponent implements OnInit {
      * Get all chat rooms
      */
     allChatRooms: Array<string> = [];
+    /**
+     * Private variable `activeUsers`
+     * Array[{
+     *  user: ""
+     *  room: ""
+     *  timeJoined: Date
+     *  timeMessaged: Date
+     * }]
+     */
     activeUsers: Array<{ user: string; room: string; timeJoined?: Date; timeMessaged?: Date }>  = []; 
 
     constructor(private chatService: ChatService) {
+        /**
+         * Subscribe to the socket observable when new user joined
+         */
         this.chatService.newUserJoined()
             .subscribe(data => {
                 this.activeUsers = data.allUsers;
                 this.allChatRooms = data.allChatRooms;
             });
+        /**
+         * Subscribe to the socket observable when new message received
+         */
         this.chatService.newMessageReceived()
             .subscribe(data => {
                 this.activeUsers = data.allUsers;
             });
+        /**
+         * Subscribe to the socket observable when new user inactive
+         */
         this.chatService.userInactive()
             .subscribe(data => {
                 this.activeUsers = data.allUsers;
                 this.allChatRooms = data.allChatRooms;
             });
+        /**
+         * Subscribe to the socket observable when user created a single chat
+         */
         this.chatService.newSingleChat()
             .subscribe(data => {
                 this.allChatRooms = data.allChatRooms
             })
     }
-
+    /**
+     * Angular hook on init
+     */
     ngOnInit() {
         this.timer = timer(0, 10000);
         this.timer.subscribe((t) => this.onTimeOut());
     }
-
+    /**
+     * Check for user inactivity
+     */
     onTimeOut() {
         if (this.activeUsers.length === 0) {
             return;
@@ -63,7 +88,14 @@ export class ActiveInactiveComponent implements OnInit {
             this.chatService.userInactiveEmit(inactiveUsers[0]);
         }
     };
-
+    /**
+     * 
+     * @param user 
+     * When user clicks on the other user to chat (single chat join)
+     * Set the room to chat on
+     * When USER - 1 chats with USER - 2 create a room eg. `USER1USER2`
+     * but need to make sure when USER - 2 clicks on USER - 1 to chat it doesn't create a new room
+     */
     joinRoom(user: string) {
         if (this.allChatRooms.length === 0) {
             return;
