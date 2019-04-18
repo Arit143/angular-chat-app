@@ -41,7 +41,7 @@ The screen flow are hosted below:
 
 Profile - https://gfycat.com/ifr/WelltodoSandyHare
 
-Chat App - https://gfycat.com/barrencheerygoldfinch-app
+Chat App - https://gfycat.com/horriblegraybichonfrise
 
 User Active - Inactive - https://gfycat.com/homelypleasediberiannase
 
